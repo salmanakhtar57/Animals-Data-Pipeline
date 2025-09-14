@@ -8,18 +8,16 @@ def transform_fields(file_path: str, output_file: str = "animals_cleaned.json"):
     transformed = []
 
     for animal in animals:
+        # Friends field
         if "friends" in animal:
-            if animal["friends"] and type(animal["friends"]) is str:
-                seperated = animal["friends"].split(",")
-                cleaned = []
-                for f in seperated:
-                    f = f.strip()
-                    if f:
-                        cleaned.append(f)
+            if animal["friends"] and isinstance(animal["friends"], str):
+                separated = animal["friends"].split(",")
+                cleaned = [f.strip() for f in separated if f.strip()]
                 animal["friends"] = cleaned
             elif not animal["friends"]:
                 animal["friends"] = []
 
+        # born_at field
         if "born_at" in animal and animal["born_at"]:
             ts = int(animal["born_at"]) / 1000
             dt = datetime.fromtimestamp(ts, tz=timezone.utc)

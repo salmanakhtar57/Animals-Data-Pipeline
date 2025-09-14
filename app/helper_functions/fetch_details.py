@@ -2,7 +2,6 @@ import requests
 import json
 import time
 import random
-from datetime import datetime, timezone
 
 BASE_URL = "http://127.0.0.1:3123"
 
@@ -34,13 +33,12 @@ def fetch_all_animals(output_file: str = "animals_raw.json"):
             page += 1
 
         except Exception as e:
-            print(f"Error fetching page {page}: {e}, retrying...")
+            print(f"Error fetching page: {e}")
             time.sleep(2)
 
     with open(output_file, "w") as f:
         json.dump(all_animals, f, indent=2)
-
-    print(f"Saved {len(all_animals)} raw animals to {output_file}")
+    
     return output_file
 
 
@@ -51,12 +49,9 @@ def fetch_animal_details(animal_id: int, retries: int = 3):
 
             if resp.status_code == 200:
                 return resp.json()
-            else:
-                print(f"Animal {animal_id}: Error {resp.status_code}, retry {attempt+1}/{retries}")
         except Exception as e:
-            print(f"Animal {animal_id}: Exception {e}, retry {attempt+1}/{retries}")
+            print(f"Exception {e}")
 
-        # Wait before retry
         time.sleep(random.uniform(1, 3))
 
     return None
