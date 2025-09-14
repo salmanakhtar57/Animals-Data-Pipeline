@@ -25,6 +25,12 @@ def transform_fields(file_path: str):
             elif not animal["friends"]:
                 animal["friends"] = []
 
+        # Handle born_at
+        if "born_at" in animal and animal["born_at"]:
+            ts = int(animal["born_at"]) / 1000
+            dt = datetime.fromtimestamp(ts, tz=timezone.utc)
+            animal["born_at"] = dt.isoformat()
+
         transformed.append(animal)
 
     return transformed
