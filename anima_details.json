@@ -1,0 +1,50 @@
+[
+  {
+    "id": 3440,
+    "name": "Deer",
+    "born_at": null,
+    "friends": "Finch,Kookabura"
+  },
+  {
+    "id": 3441,
+    "name": "Lapwing",
+    "born_at": null,
+    "friends": ""
+  },
+  {
+    "id": 3442,
+    "name": "Ape",
+    "born_at": null,
+    "friends": "Antelope"
+  },
+  {
+    "id": 3443,
+    "name": "Wolverine",
+    "born_at": 1757079717055,
+    "friends": "Woodcock"
+  },
+  {
+    "id": 3444,
+    "name": "Kookabura",
+    "born_at": 683105713384,
+    "friends": "Elephant,Aardvark,Elk"
+  },
+  {
+    "id": 3445,
+    "name": "Chicken",
+    "born_at": null,
+    "friends": "Porcupine,Reindeer"
+  },
+  {
+    "id": 3446,
+    "name": "Cheetah",
+    "born_at": null,
+    "friends": ""
+  },
+  {
+    "id": 3447,
+    "name": "Herring",
+    "born_at": null,
+    "friends": "Yak,Goldfinch,Gull,Tapir"
+  }
+]
