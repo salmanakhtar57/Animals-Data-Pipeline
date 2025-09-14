@@ -19,7 +19,7 @@ def post_animals_in_batches(animals: list, batch_size: int = 100):
 
     return posted
 
-@router.post("/animals/v1/home")
+@router.post("/animals/pipeline/run")
 def run_pipeline():
     raw_animals = fetch_all_animals()
     cleaned_animals = transform_fields(raw_animals)
