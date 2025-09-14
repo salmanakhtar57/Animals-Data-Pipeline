@@ -1,52 +1,32 @@
 from fastapi import APIRouter
-import json
-from datetime import datetime, timezone
+import requests, math
+from app.helper_functions.fetch_details import fetch_all_animals
+from app.helper_functions.transform_details import transform_fields
 
 router = APIRouter()
 
+BASE_URL = "http://127.0.0.1:3123"  
 
-# Function to Transform Variable 
-def transform_fields(file_path: str):
-    with open(file_path, "r") as file:
-        animals = json.load(file)
+def post_animals_in_batches(animals: list, batch_size: int = 100):
+    total_batches = math.ceil(len(animals) / batch_size)
+    posted = 0
 
-    transformed = []
+    for i in range(0, len(animals), batch_size):
+        batch = animals[i:i+batch_size]
+        resp = requests.post(f"{BASE_URL}/animals/v1/home", json=batch)
+        if resp.status_code == 200:
+            posted += len(batch)
 
-    for animal in animals:
-        if "friends" in animal:
-            if animal["friends"] and type(animal["friends"]) is str:
-                seperated = animal["friends"].split(",")
-                cleaned = []
-                for f in seperated:
-                    f = f.strip()
-                    if f:
-                        cleaned.append(f)
-                animal["friends"] = cleaned
-            elif not animal["friends"]:
-                animal["friends"] = []
-
-        # Handle born_at
-        if "born_at" in animal and animal["born_at"]:
-            ts = int(animal["born_at"]) / 1000
-            dt = datetime.fromtimestamp(ts, tz=timezone.utc)
-            animal["born_at"] = dt.isoformat()
-
-        transformed.append(animal)
-
-    return transformed
-
-animals = transform_fields(r"D:\Backend\Tech Companies Tasks\Funsol Technologies Task\Animals-Data-Pipeline\app\apis\animal_details.json")
-print(animals)
-
-
-# @router.get("/animals/v1/animals")
-# def get_list_of_animals(animals):
-#     return animals
-
-@router.get("/animals/v1/animals/<id>")
-def get_animal_by_id():
-    pass
+    return posted
 
 @router.post("/animals/v1/home")
-def tarnsorm_animal_data():
-    pass
+def run_pipeline():
+    raw_animals = fetch_all_animals()
+    cleaned_animals = transform_fields(raw_animals)
+    posted_count = post_animals_in_batches(cleaned_animals)
+
+    return {
+        "status": "done",
+        "fetched": len(raw_animals),
+        "posted": posted_count
+    }

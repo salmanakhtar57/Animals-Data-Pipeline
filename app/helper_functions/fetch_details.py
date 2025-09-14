@@ -6,13 +6,10 @@ from datetime import datetime, timezone
 
 BASE_URL = "http://127.0.0.1:3123"
 
-# ----------------------------
-# 1. Fetch raw data from Docker API
-# ----------------------------
 def fetch_all_animals(output_file: str = "animals_raw.json"):
     all_animals = []
     page = 1
-    total_pages = 1  # placeholder
+    total_pages = 1 
 
     while page <= total_pages:
         try:
@@ -40,11 +37,10 @@ def fetch_all_animals(output_file: str = "animals_raw.json"):
             print(f"Error fetching page {page}: {e}, retrying...")
             time.sleep(2)
 
-    # Save raw data
     with open(output_file, "w") as f:
         json.dump(all_animals, f, indent=2)
 
-    print(f"✅ Saved {len(all_animals)} raw animals to {output_file}")
+    print(f"Saved {len(all_animals)} raw animals to {output_file}")
     return output_file
 
 
